@@ -60,6 +60,10 @@ leaflet, htmlwidgets, htmltools, viridisLite, scales
 
 Install INLA from [r-inla.org](https://www.r-inla.org/download-install). Script 03 downloads Ghana's administrative boundaries on first run, so it needs internet access.
 
+
+
+## Code was tidied for public release with AI assistance and checked by the authors
+
 ## License
 
 MIT. The license covers the code only, not the survey or environmental data.
