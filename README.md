@@ -8,15 +8,15 @@ This repository contains code only. Survey microdata, GPS files, derived pregnan
 
 ## Scope and status
 
-These are portable copies of the corrected analysis scripts. Cooking fuel is excluded from adjustment and complete-case eligibility. Models retain mother- and cluster-level random intercepts; region random intercepts are excluded. HI and WBGT are evaluated separately. Linear heat effects use original units (per 1 degree Celsius), not IQR scaling; linear EVI effects use a 0.1-unit increment.
+These are portable copies of the corrected analysis scripts. Models retain mother- and cluster-level random intercepts; region random intercepts are excluded. HI and WBGT are evaluated separately. Linear heat effects use original units (per 1 degree Celsius), not IQR scaling; linear EVI effects use a 0.1-unit increment.
 
-The cooking-fuel correction requires rebuilding the primary sample and refitting downstream analyses. Previously reported sample sizes and estimates must be updated after the corrected runs. These public copies have received static checks but have not been executed end to end. Package versions and session information from the actual analysis environment should be recorded for a reproducibility release; no dependency lockfile is supplied here.
+Run the final workflow from Script 02 to build the primary analytic sample and fit downstream analyses. Previously reported sample sizes and estimates must be updated after the corrected runs. These public copies have received static checks but have not been executed end to end. Package versions and session information from the actual analysis environment should be recorded for a reproducibility release; no dependency lockfile is supplied here.
 
 The obsolete `02B_Ghana_Refit_Noncompliant_Linear_Models.R` is intentionally omitted. Corrected Script 02 fits the primary linear models directly.
 
 ## Private input
 
-The starting input is `Ghana_Discrete_Time_Monthly.rds`, produced by the upstream pregnancy reconstruction and environmental linkage workflow. It is not included, and these analysis scripts do not reconstruct it from raw DHS files. The previously saved `Ghana_DT_AnalysisReady_PrimaryCC.rds` alone is insufficient to rebuild pregnancies excluded by the old cooking-fuel filter.
+The starting input is `Ghana_Discrete_Time_Monthly.rds`, produced by the upstream pregnancy reconstruction and environmental linkage workflow. It is not included, and these analysis scripts do not reconstruct it from raw DHS files. Start from the monthly input rather than substituting a previously saved complete-case dataset.
 
 By default, run from the repository root and place the starting input at:
 
@@ -26,7 +26,7 @@ data/Ghana_Discrete_Time_Monthly.rds
 
 The input must contain the harmonized monthly risk set, pregnancy and mother identifiers, cluster identifiers, outcome, weights, exposure series, timing variables, and adjustment variables expected by Script 02. Spatial analysis additionally requires linked cluster coordinates. Each script performs its own input checks.
 
-Script 02 writes the rebuilt analysis-ready datasets and fitted models under `Results/Models`. Later scripts require these outputs and reject datasets lacking the corrected-sample marker. Do not substitute older files named `Ghana_DT_AnalysisReady_PrimaryCC_CookingCorrected.rds`.
+Script 02 writes the rebuilt analysis-ready datasets and fitted models under `Results/Models`. Later scripts require these outputs and reject datasets lacking the corrected-sample marker. Use only the canonical filenames documented here.
 
 ## Paths
 
@@ -87,7 +87,7 @@ Use the official INLA installation instructions for INLA. Spatial packages may r
 
 ## Checkpoints and outputs
 
-Corrected runs use new checkpoint namespaces, so older v6/v7 fits are not selected. Script 05 only inventories `glmmTMB_checkpoints_no_cooking_v1` and recognizes `EVI_per_0_1` filenames. Do not manually repopulate the corrected directories with legacy models.
+Corrected runs use new checkpoint namespaces, so older v6/v7 fits are not selected. Script 05 only inventories `glmmTMB_checkpoints_final_v1` and recognizes `EVI_per_0_1` filenames. Do not manually repopulate the corrected directories with legacy models.
 
 To force refitting after another data or model change, set `GHANA_REFIT_MODELS=true` for Script 02 and `GHANA_REFIT_SENSITIVITY=true` for Script 04. Script 03 refits by default; keep `GHANA_REFIT_SPATIAL_MODELS=true`. Script 04B resumes from its corrected checkpoint directory; use a fresh checkpoint-directory name in that script after further data or specification changes.
 
